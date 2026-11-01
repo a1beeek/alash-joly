@@ -1,0 +1,548 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Алаш жолы</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: sticky scrolling tab bar, single-column phone-first views, newspaper-style serif headlines over a quiet grey-green ground. */
+:root{
+  --bg:#EDF0EE; --surface:#F8FAF9; --ink:#131C1B; --muted:#55625F; --line:#CBD3D0;
+  --accent:#A3262A; --accent-ink:#FFFFFF; --steppe:#1F5F4A; --steppe-soft:#D5E6DE;
+  --ok:#1F6B3A; --ok-bg:#D9EEDF; --bad:#9A2A2A; --bad-bg:#F4DADA;
+  --font-display:"PT Serif",Georgia,"Times New Roman",serif;
+  --font-body:"PT Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1615; --surface:#17211F; --ink:#E7ECEA; --muted:#96A5A1; --line:#2B3836;
+    --accent:#E2615F; --accent-ink:#1A0B0B; --steppe:#5DBB98; --steppe-soft:#1B2E28;
+    --ok:#7FD39A; --ok-bg:#16301F; --bad:#F09A9A; --bad-bg:#3A1C1C; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1615; --surface:#17211F; --ink:#E7ECEA; --muted:#96A5A1; --line:#2B3836;
+  --accent:#E2615F; --accent-ink:#1A0B0B; --steppe:#5DBB98; --steppe-soft:#1B2E28;
+  --ok:#7FD39A; --ok-bg:#16301F; --bad:#F09A9A; --bad-bg:#3A1C1C; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.2;margin:0}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto}
+header.top{padding:22px 0 14px;border-bottom:3px double var(--ink)}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mast{font-family:var(--font-display);font-weight:700;font-size:clamp(44px,15vw,84px);line-height:.95;letter-spacing:.02em;margin:6px 0 4px}
+.mast span{color:var(--accent)}
+.sub{color:var(--muted);font-size:15px}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));
+  display:flex;gap:6px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.tabs a{flex:0 0 auto;text-decoration:none;color:var(--ink);padding:8px 13px;border:1px solid var(--line);border-radius:999px;font-size:15px;background:var(--surface);white-space:nowrap}
+nav.tabs a[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+main{padding-top:20px;display:flex;flex-direction:column;gap:20px}
+.lead{font-size:18px}
+.h2{font-size:24px}
+.sec{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.stat b{display:block;font-family:var(--font-display);font-size:34px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border-radius:6px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer;font-weight:700;text-decoration:none}
+.btn.alt{background:transparent;color:var(--ink)}
+.btn[disabled]{opacity:.45;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--steppe);color:var(--bg);border-color:var(--steppe)}
+.art{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.art figure{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.art svg{display:block;width:100%;height:auto}
+.art figcaption{padding:10px 12px;font-size:14px;color:var(--muted)}
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.tl .yr{font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--accent);font-variant-numeric:tabular-nums}
+.tl .tx{min-width:0}
+.tl .tx b{display:block}
+.tl .tx span{color:var(--muted);font-size:15px}
+.thesis{display:grid;grid-template-columns:44px 1fr;gap:12px}
+.thesis .n{font-family:var(--font-display);font-weight:700;font-size:28px;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.thesis b{font-family:var(--font-display)}
+.person{display:flex;flex-direction:column;gap:2px}
+.person .yrs{font-size:13px;letter-spacing:.06em;color:var(--accent);font-variant-numeric:tabular-nums}
+.person h3{font-size:19px}
+.person p{font-size:15px;color:var(--muted)}
+.vid{display:flex;flex-direction:column;gap:8px}
+.vbox{aspect-ratio:16/9;max-width:100%;background:var(--steppe-soft);border:1px dashed var(--steppe);border-radius:6px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:var(--steppe)}
+.term{border-top:1px solid var(--line);padding:10px 0}
+.term b{font-family:var(--font-display);font-size:18px}
+input[type="search"]{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.mapbox svg{display:block;width:100%;height:auto}
+.kz{fill:var(--steppe-soft);stroke:var(--steppe);stroke-width:1.5}
+.grat{stroke:var(--line);stroke-width:.6;stroke-dasharray:3 4}
+.pin{fill:var(--accent);stroke:var(--surface);stroke-width:2;cursor:pointer}
+.pin.sel{fill:var(--ink)}
+.pin.good{fill:var(--ok)}.pin.badp{fill:var(--bad)}
+.pinhit{fill:transparent;cursor:pointer}
+.lbl{font-family:var(--font-body);font-size:12px;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px;pointer-events:none}
+.mapnote{font-size:12px;fill:var(--muted)}
+.task{display:flex;flex-direction:column;gap:12px}
+.task h3{font-size:20px}
+.tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{min-height:44px;text-align:left;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);cursor:pointer}
+.opt.ok{background:var(--ok-bg);border-color:var(--ok)}
+.opt.no{background:var(--bad-bg);border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+select{width:100%;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.row{display:grid;grid-template-columns:1fr;gap:6px}
+.ord{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ord li{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.ord li.ok{background:var(--ok-bg);border-color:var(--ok)}
+.ord li.no{background:var(--bad-bg);border-color:var(--bad)}
+.ord button{min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--surface);cursor:pointer;font-size:18px}
+.res{display:none;border-left:4px solid var(--accent);background:var(--bg);padding:10px 12px;border-radius:0 6px 6px 0}
+.res.show{display:block}
+.res .m{font-weight:700}
+.res .c{color:var(--muted);margin-top:2px}
+.bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--steppe)}
+.rr{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.total{font-family:var(--font-display);font-size:56px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.pending{color:var(--muted)}
+footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .5s}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Тарих жобасы · 9–10 апта</div>
+    <div class="mast">Алаш<span>.</span></div>
+    <div class="sub">Алаш қозғалысы мен Алашорда автономиясы, 1905–1920</div>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Бөлімдер"></nav>
+  <main id="view"></main>
+  <footer>Мәліметтер оқу жобасына арналған. Күмәнді дерек болса, оқулық пен ғылыми еңбектерден тексеріңіз.</footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+var TABS=[["home","Басты бет"],["map","Карта"],["timeline","Хронология"],["read","Оқу"],["people","Тұлғалар"],["video","Видео"],["game","Ойын"],["terms","Терминдер"],["result","Нәтиже"]];
+
+var FACTS=[
+["1905","Қарқаралы петициясы","Қарқаралыда жер мәселесі мен халық құқығы туралы өтініш жазылып, көптеген адам қол қойды. Әлихан Бөкейханов, Ахмет Байтұрсынұлы, Міржақып Дулатұлы осы қозғалыстың жанында болды.",1],
+["1906","Выборг үндеуі","Әлихан Бөкейханов Ресей Мемлекеттік думасын таратқанына қарсы Выборг үндеуіне қол қойды.",1],
+["1909","«Оян, қазақ!»","Міржақып Дулатұлының өлеңдер жинағы Петербургте басылып шықты.",1],
+["1909","«Қырық мысал»","Ахмет Байтұрсынұлының аударма мысалдар жинағы Петербургте жарық көрді.",1],
+["1910","«Бақытсыз Жамал»","Міржақып Дулатұлының романы қазақ әдебиетіндегі алғашқы романдардың бірі болды.",1],
+["1911","«Айқап» журналы","Троицк қаласында шыға бастады. Редакторы Мұхамеджан Сералин, Міржақып Дулатұлы жақын қызмет етті.",1],
+["1912","«Оқу құралы»","Байтұрсынұлының қазақша сауат ашу оқулығы жарық көрді.",1],
+["1913","«Қазақ» газеті","Орынборда 2 ақпанда алғашқы нөмірі шықты. Редакторы Ахмет Байтұрсынұлы, ең жақын серіктері Әлихан Бөкейханов пен Міржақып Дулатұлы.",1],
+["1914","«Тіл құрал»","Байтұрсынұлы қазақ тілі грамматикасының негізін салған еңбегін жариялады.",1],
+["1916","Ұлт-азаттық көтеріліс","Патшаның 25 маусымдағы жарлығымен қазақ жігіттерін майдан сызығының тылындағы жұмысқа алу басталды, ел көтерілді. Алаш зиялылары халықты қорғау ісіне араласты.",1],
+["1917","Ақпан төңкерісі","Ресейде патша өкіметі құлап, ұлттық мәселені көтеруге мүмкіндік туды.",2],
+["1917","Бірінші жалпықазақ съезі","Шілде айында Орынборда өтті. Жер, билік, білім мәселелері талқыланды.",2],
+["1917","Алаш партиясы","Бірінші съезде Алаш партиясы құрылды, бағдарламасы сол жылы «Қазақ» газетінде жарияланды.",2],
+["1917","Екінші жалпықазақ съезі","Желтоқсанда Орынборда өтіп, Алаш автономиясын жариялады.",2],
+["1917","Алашорда үкіметі","Үкімет 25 мүшеден тұрды, оның 10 орны өзге ұлт өкілдеріне қалдырылды.",2],
+["1917","Төраға","Әлихан Бөкейханов Алашорда үкіметінің төрағасы болып сайланды.",2],
+["1917","Орталық Семей","Алашорданың басты орталығы Семей қаласы болды. Батыста да өкілдігі жұмыс істеді.",2],
+["1917","Түркістан автономиясы","Желтоқсанда Қоқанда Түркістан автономиясы жарияланды. Бұл істе Мұстафа Шоқай белсенді болды.",2],
+["1919","Келіссөз және кешірім","Алашорда басшылары Кеңес өкіметімен келіссөзге барды, кеңес жағы Алаш қайраткерлеріне кешірім жариялады.",2],
+["1920","Алашорда тарады","Кеңес өкіметі орнап, Алашорда үкіметі жұмысын тоқтатты.",3],
+["1920","Қазақ автономиясы","26 тамызда Қырғыз (Қазақ) АССР-і құрылды, орталығы Орынбор болды.",3],
+["1925","Қызылорда астана","Республиканың атауы Қазақ АССР болып өзгеріп, астанасы Қызылорда қаласына көшті.",3],
+["1929","Астана Алматыға көшті","Қазақ АССР-інің астанасы Қызылордадан Алматыға ауысты.",3],
+["1928","Қуғын-сүргін басталды","1928–1930 жылдары Алаш қайраткерлері тұтқындала бастады.",3],
+["1937","Атылған алаштықтар","1937–1938 жылдары Бөкейханов, Байтұрсынұлы, Тынышбаев, Мағжан Жұмабаев сияқты көптеген қайраткер атылды.",3],
+["1941","Мұстафа Шоқай","Шетелде жүрген Шоқай Берлинде қайтыс болды.",3],
+["1988","Ақтау басталды","1988–1989 жылдары Алаш қайраткерлері ақталды.",4],
+["1990","«Алаш» партиясы","Алаш идеясын жалғастырған «Алаш» ұлттық бостандық партиясы құрылды.",4],
+["1991","Тәуелсіздік","Қазақстан тәуелсіздігін жариялады. Алаш мұрасы жан-жақты зерттеле бастады.",4],
+["2017","Алаш автономиясына 100 жыл","Алаш автономиясының жүз жылдығы мемлекеттік деңгейде аталып өтті.",4]
+];
+FACTS.sort(function(a,b){return a[0]-b[0]});
+
+var THESES=[
+["Алаш — ұлттық қозғалыс","Алаш қозғалысы XX ғасыр басында қазақ зиялыларының бастауымен пайда болған ұлттық-саяси қозғалыс."],
+["Басты мақсат","Қозғалыс жер мәселесін шешуді, халықтың құқығын қорғауды және білімді дамытуды көздеді."],
+["Баспасөздің рөлі","«Айқап» пен «Қазақ» басылымдары халықты ояту мен ортақ идея қалыптастырудың орталығы болды."],
+["Тіл және оқу","Ахмет Байтұрсынұлы қазақ тілінің емлесі мен грамматикасын жүйеге келтіріп, оқулықтар жазды."],
+["1917 жылғы съездер","Жалпықазақ съездері қазақ қоғамының бағдарламасы мен болашақ мемлекеттік құрылымын талқылады."],
+["Партия бағдарламасы","Алаш партиясы демократиялық құрылысты, ұлттық автономияны және жалпыға бірдей білімді жақтады."],
+["Алашорда үкіметі","Алашорда 1917–1920 жылдары қазақ автономиясының үкіметі ретінде жұмыс істеді."],
+["Өзге ұлттарға құрмет","Үкімет құрамындағы 25 орынның 10-ы өзге ұлт өкілдеріне берілді."],
+["Кеңес өкіметімен қатынас","1919–1920 жылдары Алашорда басшылары кеңес жағымен келіссөз жүргізді, қазақ автономиясын құруға қатысты."],
+["Қуғын және ақтау","Көптеген алаштық 1930-жылдары жазаланды, тек 1988–1989 жылдан бастап ақталды, мұрасы қайта оқылды."]
+];
+
+var PEOPLE=[
+["Әлихан Бөкейханов","1866–1937","Алашорда төрағасы, ғалым, мемлекет қайраткері. Қарқаралы өңірінде туған."],
+["Ахмет Байтұрсынұлы","1872–1937","«Қазақ» газетінің редакторы, тіл білімінің негізін салушы, «ұлт ұстазы»."],
+["Міржақып Дулатұлы","1885–1935","Ақын, жазушы, «Оян, қазақ!» мен «Бақытсыз Жамал» авторы."],
+["Мұстафа Шоқай","1890–1941","Түркістан қайраткері, шетелде «Яш Түркістан» журналын шығарды. Қызылорда өңірінде туған."],
+["Мағжан Жұмабаев","1893–1938","Ақын, «Батыр Баян» поэмасының авторы, педагог."],
+["Жүсіпбек Аймауытов","1889–1931","Жазушы, педагог, «Қартқожа» романының авторы."],
+["Мұхамеджан Тынышбаев","1879–1937","Қазақтың алғашқы инженерлерінің бірі, Алаш қайраткері."],
+["Халел Досмұхамедұлы","1883–1939","Дәрігер, жазушы, ғалым-ағартушы, Алаш қайраткері."],
+["Жаһанша Досмұхамедұлы","1887–1938","Алашорда қайраткері, заңгер."],
+["Әлімхан Ермеков","1891–1994","Алаш қайраткері, ұзақ жыл қуғын көрген, 1994 жылға дейін өмір сүрген."]
+];
+
+var TERMS=[
+["Алаш","Қазақ ұлт-азаттық қозғалысының атауы, тарихи «Алаш» сөзімен байланысты."],
+["Алашорда","1917–1920 жылдардағы қазақ автономиясының үкіметі."],
+["Автономия","Мемлекет құрамында өз ішкі істерін өзі басқару құқығы."],
+["Съезд","Өкілдердің жиналып, шешім қабылдайтын жиыны."],
+["Партия бағдарламасы","Партияның мақсаттары мен міндеттері жазылған құжат."],
+["Петиция","Билікке жазылған ұжымдық өтініш."],
+["Қуғын-сүргін","Адамдарды саяси себеппен қудалау, түрмеге жабу, атып тастау."],
+["Ақтау","Заңсыз соттаған адамның кінәсіздігін ресми түрде мойындау."],
+["Ревком","Революциялық комитет. Кеңес өкіметінің уақытша басқару органы."],
+["Зиялылар","Білімді, қоғамдық ісіне белсенді адамдар тобы."],
+["Эмиграция","Адамның өз елінен басқа елге көшіп кетуі."],
+["Мерзімді басылым","Газет, журнал сияқты тұрақты шығатын баспасөз."]
+];
+
+var VIDEOS=[
+{t:"Алаш қозғалысы және қазақ ұлттық идеясы (8 сынып)",d:"Қозғалыстың шығуы мен мақсаттары",u:"https://www.youtube.com/watch?v=3dtv7ps9sTk"},
+{t:"Алаш қозғалысы, Алаш партиясы, Алашорда үкіметі",d:"Партия мен үкіметтің құрылуы",u:"https://www.youtube.com/watch?v=ux_1GdWEMTk"},
+{t:"Алаш қозғалысы және қазақтың ұлттық идеясы (67-сабақ)",d:"Қосымша сабақ: қозғалыстың идеясы",u:"https://www.youtube.com/watch?v=7J3LB9cZntA"}
+];
+
+var CITIES=[
+{id:"orn",n:"Орынбор",x:55.1,y:51.8,dx:6,dy:-10,i:"Жалпықазақ съездері өткен, «Қазақ» газеті шыққан қала. 1920 жылы автономияның алғашқы орталығы болды."},
+{id:"sem",n:"Семей",x:80.2,y:50.4,dx:-6,dy:-10,a:"end",i:"Алашорда үкіметінің басты орталығы."},
+{id:"kar",n:"Қарқаралы",x:75.4,y:49.4,dx:-8,dy:16,a:"end",i:"1905 жылғы Қарқаралы петициясы жазылған өңір, Әлихан Бөкейхановтың туған жері."},
+{id:"tor",n:"Торғай",x:63.5,y:49.6,dx:0,dy:-11,a:"middle",i:"Байтұрсынұлы мен Дулатұлы өскен өлке."},
+{id:"qyz",n:"Қызылорда",x:65.5,y:44.85,dx:8,dy:14,i:"1925–1929 жылдары Қазақ АССР-інің астанасы."},
+{id:"alm",n:"Алматы",x:76.9,y:43.25,dx:-8,dy:16,a:"end",i:"1929 жылдан астана."},
+{id:"qok",n:"Қоқан",x:70.9,y:40.5,dx:0,dy:-9,a:"middle",i:"1917 жылы Түркістан автономиясы жарияланған қала."}
+];
+var KZ=[[46.5,48.5],[47.3,50.0],[49.5,51.7],[53.0,51.5],[55.8,50.7],[58.5,51.2],[61.2,50.8],[61.5,53.0],[63.5,54.0],[69.0,55.2],[73.5,54.0],[76.5,54.1],[80.0,51.2],[84.0,50.8],[87.3,49.1],[86.0,47.0],[83.0,47.2],[80.3,44.9],[80.2,42.8],[78.0,41.0],[74.0,43.0],[71.0,42.8],[69.4,41.4],[66.0,42.0],[61.0,44.0],[58.5,45.5],[56.0,45.0],[55.0,41.5],[52.5,42.0],[51.0,44.5],[49.5,46.5]];
+function px(lon){return (lon-45)*13.4+16}
+function py(lat){return (56.2-lat)*20+16}
+
+/* ---------- HELPERS ---------- */
+var $view=document.getElementById("view");
+var RESULTS={};
+function el(h){return h}
+function pct(s,t){return Math.round(100*s/t)}
+function tier(p){
+  if(p>=80)return "Тақырыпты жақсы меңгердіңіз. Келесі тапсырмаға өтуге болады.";
+  if(p>=50)return "Негізгі ойды түсіндіңіз. «Хронология» мен «Тұлғалар» бөлімін қайта қарап шығыңыз.";
+  return "Тақырыпты қайта оқыған жөн. «Оқу» бөлімінен бастаңыз.";
+}
+function showRes(id,s,t){
+  RESULTS[id]={s:s,t:t};
+  var b=document.getElementById("res-"+id);
+  var p=pct(s,t);
+  b.innerHTML='<div class="m">Негізгі нәтиже: '+s+' / '+t+' ('+p+'%)</div><div class="c">Қорытынды: '+tier(p)+'</div>';
+  b.classList.add("show");
+}
+function shuffle(a,seed){
+  var r=a.slice(),s=seed;
+  for(var i=r.length-1;i>0;i--){s=(s*9301+49297)%233280;var j=Math.floor(s/233280*(i+1));var t=r[i];r[i]=r[j];r[j]=t}
+  return r;
+}
+
+/* ---------- VIEWS ---------- */
+function mapSvg(opts){
+  opts=opts||{};
+  var d="M"+KZ.map(function(p){return px(p[0]).toFixed(1)+","+py(p[1]).toFixed(1)}).join("L")+"Z";
+  var g="";
+  [50,60,70,80].forEach(function(l){g+='<line class="grat" x1="'+px(l)+'" y1="16" x2="'+px(l)+'" y2="334"/>'});
+  [42,46,50,54].forEach(function(l){g+='<line class="grat" x1="16" y1="'+py(l)+'" x2="594" y2="'+py(l)+'"/>'});
+  var pins="";
+  CITIES.forEach(function(c){
+    var x=px(c.x),y=py(c.y);
+    pins+='<g data-city="'+c.id+'"><circle class="pinhit" cx="'+x+'" cy="'+y+'" r="20"/><circle class="pin" id="'+(opts.pre||"p")+'-'+c.id+'" cx="'+x+'" cy="'+y+'" r="7"/>'+
+      '<text class="lbl" x="'+(x+c.dx)+'" y="'+(y+c.dy)+'" text-anchor="'+(c.a||"start")+'">'+c.n+'</text></g>';
+  });
+  return '<div class="mapbox"><svg viewBox="0 0 610 350" role="img" aria-label="Қазақстанның схемалық картасы">'+g+'<path class="kz" d="'+d+'"/>'+pins+
+    '<text class="mapnote" x="16" y="346">Схема, масштабсыз. Қазіргі шекара негізінде.</text></svg></div>';
+}
+
+function vHome(){
+  var np=PEOPLE.length,nf=FACTS.length,nt=THESES.length;
+  return '<section class="sec"><p class="lead">Алаш қозғалысы қазақ зиялыларының бастауымен XX ғасыр басында пайда болды. Бұл сайт 1905–1920 жылдардағы оқиғаларды карта, хронология, тұлғалар және тапсырмалар арқылы көрсетеді.</p></section>'+
+  '<section class="grid">'+
+  '<a class="stat" href="#read"><b>'+nt+'</b><span>негізгі тезис</span></a>'+
+  '<a class="stat" href="#timeline"><b>'+nf+'</b><span>тарихи факт</span></a>'+
+  '<a class="stat" href="#people"><b>'+np+'</b><span>тарихи тұлға</span></a>'+
+  '<a class="stat" href="#video"><b>3</b><span>видео</span></a>'+
+  '<a class="stat" href="#game"><b>5</b><span>түрлі тапсырма</span></a>'+
+  '<a class="stat" href="#map"><b>7</b><span>картадағы орын</span></a>'+
+  '</section>'+
+  '<section class="sec"><h2 class="h2">Тарихи көріністер</h2><div class="art">'+
+  '<figure><svg viewBox="0 0 240 300" role="img" aria-label="Қазақ газетінің схемасы"><rect width="240" height="300" fill="var(--surface)"/><rect x="14" y="14" width="212" height="272" fill="none" stroke="var(--ink)" stroke-width="1.5"/><line x1="14" y1="62" x2="226" y2="62" stroke="var(--ink)" stroke-width="3"/><text x="120" y="52" text-anchor="middle" font-family="PT Serif,serif" font-weight="700" font-size="34" fill="var(--ink)">ҚАЗАҚ</text><text x="120" y="76" text-anchor="middle" font-family="PT Sans,sans-serif" font-size="10" fill="var(--muted)">Орынбор · 2 ақпан 1913</text><line x1="14" y1="84" x2="226" y2="84" stroke="var(--ink)" stroke-width="1"/><g stroke="var(--line)" stroke-width="3"><line x1="26" y1="102" x2="108" y2="102"/><line x1="26" y1="114" x2="108" y2="114"/><line x1="26" y1="126" x2="108" y2="126"/><line x1="26" y1="138" x2="108" y2="138"/><line x1="26" y1="150" x2="108" y2="150"/><line x1="26" y1="162" x2="108" y2="162"/><line x1="26" y1="174" x2="108" y2="174"/><line x1="26" y1="186" x2="108" y2="186"/><line x1="26" y1="198" x2="108" y2="198"/><line x1="26" y1="210" x2="108" y2="210"/><line x1="26" y1="222" x2="108" y2="222"/><line x1="26" y1="234" x2="108" y2="234"/><line x1="26" y1="246" x2="108" y2="246"/><line x1="26" y1="258" x2="108" y2="258"/><line x1="124" y1="102" x2="214" y2="102"/><line x1="124" y1="114" x2="214" y2="114"/><line x1="124" y1="126" x2="214" y2="126"/><line x1="124" y1="138" x2="214" y2="138"/></g><rect x="124" y="152" width="90" height="62" fill="var(--steppe-soft)" stroke="var(--steppe)"/><g stroke="var(--line)" stroke-width="3"><line x1="124" y1="228" x2="214" y2="228"/><line x1="124" y1="240" x2="214" y2="240"/><line x1="124" y1="252" x2="214" y2="252"/><line x1="124" y1="264" x2="190" y2="264"/></g></svg><figcaption>«Қазақ» газеті. Сурет-схема, түпнұсқа емес.</figcaption></figure>'+
+  '<figure><svg viewBox="0 0 240 300" role="img" aria-label="Шаңырақ схемасы"><rect width="240" height="300" fill="var(--surface)"/><circle cx="120" cy="140" r="86" fill="none" stroke="var(--accent)" stroke-width="3"/><circle cx="120" cy="140" r="24" fill="none" stroke="var(--ink)" stroke-width="2.5"/><g stroke="var(--ink)" stroke-width="1.6"><line x1="120" y1="116" x2="120" y2="54"/><line x1="120" y1="164" x2="120" y2="226"/><line x1="96" y1="140" x2="34" y2="140"/><line x1="144" y1="140" x2="206" y2="140"/><line x1="103" y1="123" x2="59" y2="79"/><line x1="137" y1="157" x2="181" y2="201"/><line x1="137" y1="123" x2="181" y2="79"/><line x1="103" y1="157" x2="59" y2="201"/></g><text x="120" y="262" text-anchor="middle" font-family="PT Serif,serif" font-weight="700" font-size="20" fill="var(--ink)">Желтоқсан 1917</text><text x="120" y="282" text-anchor="middle" font-family="PT Sans,sans-serif" font-size="11" fill="var(--muted)">Алаш автономиясы жарияланды</text></svg><figcaption>Шаңырақ белгісі. Сурет-схема.</figcaption></figure>'+
+  '</div></section>'+
+  '<section class="sec"><h2 class="h2">Қалай жұмыс істеу керек</h2><div class="card"><p>1. «Оқу» бөлімінде 10 тезисті оқыңыз.<br>2. «Хронология» мен «Карта» арқылы оқиғаларды орнына қойыңыз.<br>3. «Тұлғалар» мен «Терминдерді» қарап шығыңыз.<br>4. «Ойын» бөлімінде 5 тапсырманы орындаңыз.<br>5. «Нәтиже» бөлімінде қорытындыңызды көріңіз.</p></div><a class="btn" href="#read">Оқуды бастау</a></section>';
+}
+
+function vMap(){
+  return '<section class="sec"><h2 class="h2">Алаш картасы</h2><p>Нүктені басыңыз, ол жердің Алашқа қатысы көрсетіледі.</p>'+mapSvg({pre:"m"})+
+  '<div class="card" id="mapinfo"><b>Қаланы таңдаңыз</b><p class="pending">Мысалы, Семей немесе Орынбор.</p></div></section>';
+}
+function bindMap(){
+  $view.addEventListener("click",mapClick);
+}
+function mapClick(e){
+  var g=e.target.closest("[data-city]");
+  if(!g)return;
+  if(location.hash.replace("#","")!=="map")return;
+  var c=CITIES.filter(function(x){return x.id===g.getAttribute("data-city")})[0];
+  document.querySelectorAll(".pin").forEach(function(p){p.classList.remove("sel")});
+  document.getElementById("m-"+c.id).classList.add("sel");
+  document.getElementById("mapinfo").innerHTML="<b>"+c.n+"</b><p>"+c.i+"</p>";
+}
+
+var PERIOD=0;
+function vTimeline(){
+  var names=["Барлығы","1905–1916","1917–1919","1920–1941","1988–2017"];
+  var chips=names.map(function(n,i){return '<button class="chip" data-per="'+i+'" aria-pressed="'+(PERIOD===i)+'">'+n+'</button>'}).join("");
+  var list=FACTS.filter(function(f){return PERIOD===0||f[3]===PERIOD}).map(function(f){
+    return '<li><div class="yr">'+f[0]+'</div><div class="tx"><b>'+f[1]+'</b><span>'+f[2]+'</span></div></li>';
+  }).join("");
+  return '<section class="sec"><h2 class="h2">Хронология</h2><p>'+FACTS.length+' тарихи факт. Кезеңді таңдаңыз.</p><div class="chips">'+chips+'</div><ol class="tl" style="list-style:none">'+list+'</ol></section>';
+}
+
+function vRead(){
+  return '<section class="sec"><h2 class="h2">Негізгі тезистер</h2>'+THESES.map(function(t,i){
+    return '<div class="card thesis"><div class="n">'+(i+1)+'</div><div><b>'+t[0]+'</b><p>'+t[1]+'</p></div></div>';
+  }).join("")+'<a class="btn" href="#game">Тапсырмаға өту</a></section>';
+}
+
+function vPeople(){
+  return '<section class="sec"><h2 class="h2">Тарихи тұлғалар</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">'+PEOPLE.map(function(p){
+    return '<div class="card person"><span class="yrs">'+p[1]+'</span><h3>'+p[0]+'</h3><p>'+p[2]+'</p></div>';
+  }).join("")+'</div></section>';
+}
+
+function vVideo(){
+  return '<section class="sec"><h2 class="h2">Видеолар</h2>'+VIDEOS.map(function(v,i){
+    var box=v.u?'<a class="btn" href="'+v.u+'" target="_blank" rel="noopener">Видеоны көру</a>':'<div class="vbox">Видео сілтемесі жақында қосылады</div>';
+    return '<div class="card vid"><span class="tag">Видео '+(i+1)+'</span><h3>'+v.t+'</h3><p>'+v.d+'</p>'+box+'</div>';
+  }).join("")+'</section>';
+}
+
+var TQ=document.createElement("div");
+function vTerms(){
+  return '<section class="sec"><h2 class="h2">Терминдер</h2><input type="search" id="tsearch" placeholder="Терминді іздеу" aria-label="Терминді іздеу"><div id="tlist">'+termList("")+'</div></section>';
+}
+function termList(q){
+  q=q.toLowerCase();
+  var r=TERMS.filter(function(t){return !q||t[0].toLowerCase().indexOf(q)>-1||t[1].toLowerCase().indexOf(q)>-1});
+  if(!r.length)return '<p class="pending">Ештеңе табылмады.</p>';
+  return r.map(function(t){return '<div class="term"><b>'+t[0]+'</b><p>'+t[1]+'</p></div>'}).join("");
+}
+
+/* ----- Tasks ----- */
+var QUIZ=[
+["Алаш автономиясы қашан жарияланды?",["1917 жылғы желтоқсан","1916 жылғы маусым","1920 жылғы тамыз","1913 жылғы ақпан"],0],
+["«Қазақ» газетінің редакторы кім?",["Әлихан Бөкейханов","Ахмет Байтұрсынұлы","Міржақып Дулатұлы","Мағжан Жұмабаев"],1],
+["«Оян, қазақ!» жинағының авторы кім?",["Жүсіпбек Аймауытов","Мұстафа Шоқай","Міржақып Дулатұлы","Халел Досмұхамедұлы"],2],
+["Алашорда үкіметінде өзге ұлттарға неше орын берілді?",["5","10","15","25"],1],
+["Алаш партиясы қай қалада өткен съезде құрылды?",["Семей","Алматы","Қызылорда","Орынбор"],3]
+];
+var MATCH=[
+["Әлихан Бөкейханов","Алашорда үкіметінің төрағасы"],
+["Ахмет Байтұрсынұлы","«Қазақ» газетінің редакторы"],
+["Міржақып Дулатұлы","«Бақытсыз Жамал» романының авторы"],
+["Мұстафа Шоқай","Эмиграцияда «Яш Түркістан» журналын шығарды"],
+["Мағжан Жұмабаев","«Батыр Баян» поэмасының авторы"]
+];
+var ORDER=[["Қарқаралы петициясы",1905],["«Оян, қазақ!» жинағы",1909],["«Қазақ» газетінің шығуы",1913],["Алаш автономиясының жариялануы",1917],["Қазақ АССР-інің құрылуы",1920]];
+var TRUE=[
+["Алашорда үкіметі 25 мүшеден тұрды.",true],
+["Алаш қайраткерлерінің бәрі 1917 жылы атылды.",false],
+["Мұстафа Шоқай Қызылорда өңірінде туған.",true],
+["Қызылорда 1925–1929 жылдары республиканың астанасы болды.",true],
+["«Қазақ» газеті Алматыда шықты.",false],
+["Алаш партиясы мен Алашорда үкіметі бір нәрсе емес.",true]
+];
+var MAPQ=[
+["Алашорда үкіметінің басты орталығы қай жерде болды?","sem"],
+["Екінші жалпықазақ съезі қай қалада өтті?","orn"],
+["1925–1929 жылдары астана болған қала қайсы?","qyz"],
+["1905 жылғы петиция жазылған өңір қайсы?","kar"],
+["1929 жылдан бергі астана қайсы?","alm"]
+];
+var GS={quiz:{},match:{},ord:[],tf:{},mq:0,mscore:0};
+
+function vGame(){
+  var h='<section class="sec"><h2 class="h2">Ойын: 5 тапсырма</h2><p>Әр тапсырмадан кейін негізгі нәтиже мен қорытынды шығады.</p></section>';
+  // 1 quiz
+  h+='<section class="card task" id="t1"><span class="tag">Тапсырма 1 · Тест</span><h3>Дұрыс жауапты таңдаңыз</h3>';
+  QUIZ.forEach(function(q,i){
+    h+='<div class="q"><b>'+(i+1)+'. '+q[0]+'</b><div class="opts">'+q[1].map(function(o,j){return '<button class="opt" data-quiz="'+i+':'+j+'">'+o+'</button>'}).join("")+'</div></div>';
+  });
+  h+='<div class="res" id="res-t1"></div></section>';
+  // 2 match
+  var descs=shuffle(MATCH.map(function(m){return m[1]}),7);
+  h+='<section class="card task" id="t2"><span class="tag">Тапсырма 2 · Сәйкестендіру</span><h3>Тұлға мен сипаттаманы жұптаңыз</h3>';
+  MATCH.forEach(function(m,i){
+    h+='<div class="row"><label for="m'+i+'"><b>'+m[0]+'</b></label><select id="m'+i+'"><option value="">Таңдаңыз</option>'+descs.map(function(d){return '<option>'+d+'</option>'}).join("")+'</select></div>';
+  });
+  h+='<button class="btn" id="mcheck">Тексеру</button><div class="res" id="res-t2"></div></section>';
+  // 3 order
+  GS.ord=shuffle(ORDER,3);
+  h+='<section class="card task" id="t3"><span class="tag">Тапсырма 3 · Реттеу</span><h3>Оқиғаларды ескіден жаңаға қарай орналастырыңыз</h3><ul class="ord" id="ordlist"></ul><button class="btn" id="ocheck">Тексеру</button><div class="res" id="res-t3"></div></section>';
+  // 4 tf
+  h+='<section class="card task" id="t4"><span class="tag">Тапсырма 4 · Дұрыс / бұрыс</span><h3>Тұжырымдар дұрыс па?</h3>';
+  TRUE.forEach(function(q,i){
+    h+='<div class="q"><b>'+(i+1)+'. '+q[0]+'</b><div class="opts" style="flex-direction:row"><button class="opt" style="flex:1;text-align:center" data-tf="'+i+':1">Дұрыс</button><button class="opt" style="flex:1;text-align:center" data-tf="'+i+':0">Бұрыс</button></div></div>';
+  });
+  h+='<div class="res" id="res-t4"></div></section>';
+  // 5 map
+  GS.mq=0;GS.mscore=0;
+  h+='<section class="card task" id="t5"><span class="tag">Тапсырма 5 · Картадан табу</span><h3 id="mqtext"></h3>'+mapSvg({pre:"g"})+'<p class="pending" id="mqstate"></p><div class="res" id="res-t5"></div></section>';
+  return h;
+}
+function afterGame(){
+  renderOrd();
+  askMap();
+}
+function renderOrd(){
+  var u=document.getElementById("ordlist");
+  if(!u)return;
+  u.innerHTML=GS.ord.map(function(o,i){
+    return '<li data-i="'+i+'"><span>'+o[0]+'</span><button data-up="'+i+'" aria-label="Жоғары">↑</button><button data-down="'+i+'" aria-label="Төмен">↓</button></li>';
+  }).join("");
+}
+function askMap(){
+  var t=document.getElementById("mqtext");
+  if(!t)return;
+  if(GS.mq>=MAPQ.length){t.textContent="Тапсырма аяқталды";document.getElementById("mqstate").textContent="";showRes("t5",GS.mscore,MAPQ.length);return}
+  t.textContent=(GS.mq+1)+"/"+MAPQ.length+". "+MAPQ[GS.mq][0];
+  document.getElementById("mqstate").textContent="Картадағы нүктені басыңыз.";
+}
+
+function vResult(){
+  var names={t1:"Тест",t2:"Сәйкестендіру",t3:"Реттеу",t4:"Дұрыс / бұрыс",t5:"Картадан табу"};
+  var S=0,T=0,done=0,rows="";
+  Object.keys(names).forEach(function(k){
+    var r=RESULTS[k];
+    if(r){S+=r.s;T+=r.t;done++;var p=pct(r.s,r.t);
+      rows+='<div class="rr"><b>'+names[k]+'</b><span>'+r.s+' / '+r.t+'</span></div><div class="bar" style="grid-column:1/-1"><i style="width:'+p+'%"></i></div>';
+    }else{
+      rows+='<div class="rr"><b>'+names[k]+'</b><span class="pending">орындалмаған</span></div><div class="bar" style="grid-column:1/-1"><i style="width:0%"></i></div>';
+    }
+  });
+  var head;
+  if(!done){head='<p class="pending">Әзірге тапсырма орындалмады. «Ойын» бөлімінен бастаңыз.</p>'}
+  else{var P=pct(S,T);head='<div class="card"><div class="tag">Қорытынды нәтиже</div><div class="total">'+P+'%</div><p>'+S+' / '+T+' ұпай, орындалған тапсырма: '+done+' / 5.</p><p style="margin-top:6px"><b>'+tier(P)+'</b></p></div>'}
+  return '<section class="sec"><h2 class="h2">Нәтиже</h2>'+head+'<div class="card" style="display:grid;gap:6px">'+rows+'</div><a class="btn alt" href="#game">Ойынға оралу</a></section>';
+}
+
+/* ---------- ROUTER ---------- */
+var VIEWS={home:vHome,map:vMap,timeline:vTimeline,read:vRead,people:vPeople,video:vVideo,game:vGame,terms:vTerms,result:vResult};
+function renderTabs(cur){
+  document.getElementById("tabs").innerHTML=TABS.map(function(t){
+    return '<a href="#'+t[0]+'"'+(t[0]===cur?' aria-current="page"':'')+'>'+t[1]+'</a>';
+  }).join("");
+  var a=document.querySelector('#tabs [aria-current="page"]');
+  if(a&&a.scrollIntoView){try{a.scrollIntoView({inline:"center",block:"nearest"})}catch(e){}}
+}
+function route(){
+  var h=location.hash.replace("#","");
+  if(!VIEWS[h])h="home";
+  renderTabs(h);
+  $view.innerHTML=VIEWS[h]();
+  if(h==="game")afterGame();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- EVENTS ---------- */
+$view.addEventListener("click",function(e){
+  var t=e.target;
+  var chip=t.closest("[data-per]");
+  if(chip){PERIOD=+chip.getAttribute("data-per");var y=window.scrollY;$view.innerHTML=vTimeline();window.scrollTo(0,y);return}
+  var qz=t.closest("[data-quiz]");
+  if(qz){
+    var p=qz.getAttribute("data-quiz").split(":"),i=+p[0],j=+p[1];
+    if(GS.quiz[i]!==undefined)return;
+    GS.quiz[i]=j;
+    var btns=qz.parentNode.children;
+    for(var k=0;k<btns.length;k++){btns[k].disabled=true;if(k===QUIZ[i][2])btns[k].classList.add("ok")}
+    if(j!==QUIZ[i][2])qz.classList.add("no");
+    if(Object.keys(GS.quiz).length===QUIZ.length){
+      var s=0;QUIZ.forEach(function(q,n){if(GS.quiz[n]===q[2])s++});
+      showRes("t1",s,QUIZ.length);
+    }
+    return;
+  }
+  if(t.id==="mcheck"){
+    var s2=0,all=true;
+    MATCH.forEach(function(m,i){var v=document.getElementById("m"+i).value;if(!v)all=false;if(v===m[1])s2++});
+    if(!all){var r=document.getElementById("res-t2");r.innerHTML='<div class="m">Барлық жұпты таңдаңыз.</div>';r.classList.add("show");return}
+    showRes("t2",s2,MATCH.length);return;
+  }
+  var up=t.closest("[data-up]"),dn=t.closest("[data-down]");
+  if(up||dn){
+    var idx=+(up||dn).getAttribute(up?"data-up":"data-down");
+    var to=up?idx-1:idx+1;
+    if(to<0||to>=GS.ord.length)return;
+    var tmp=GS.ord[idx];GS.ord[idx]=GS.ord[to];GS.ord[to]=tmp;
+    renderOrd();return;
+  }
+  if(t.id==="ocheck"){
+    var s3=0;
+    var lis=document.querySelectorAll("#ordlist li");
+    GS.ord.forEach(function(o,i){
+      var ok=o[1]===ORDER[i][1];
+      if(ok)s3++;
+      lis[i].classList.remove("ok","no");lis[i].classList.add(ok?"ok":"no");
+    });
+    showRes("t3",s3,ORDER.length);return;
+  }
+  var tf=t.closest("[data-tf]");
+  if(tf){
+    var q=tf.getAttribute("data-tf").split(":"),n=+q[0],val=q[1]==="1";
+    if(GS.tf[n]!==undefined)return;
+    GS.tf[n]=val;
+    var bs=tf.parentNode.children;
+    for(var m=0;m<bs.length;m++)bs[m].disabled=true;
+    tf.classList.add(val===TRUE[n][1]?"ok":"no");
+    if(Object.keys(GS.tf).length===TRUE.length){
+      var s4=0;TRUE.forEach(function(x,y2){if(GS.tf[y2]===x[1])s4++});
+      showRes("t4",s4,TRUE.length);
+    }
+    return;
+  }
+  var g=t.closest("[data-city]");
+  if(g){
+    var h=location.hash.replace("#","");
+    if(h==="map"){
+      var c=CITIES.filter(function(x){return x.id===g.getAttribute("data-city")})[0];
+      document.querySelectorAll(".pin").forEach(function(p){p.classList.remove("sel")});
+      document.getElementById("m-"+c.id).classList.add("sel");
+      document.getElementById("mapinfo").innerHTML="<b>"+c.n+"</b><p>"+c.i+"</p>";
+    }else if(h==="game"){
+      if(GS.mq>=MAPQ.length)return;
+      var id=g.getAttribute("data-city"),right=MAPQ[GS.mq][1];
+      var pin=document.getElementById("g-"+id);
+      if(id===right){GS.mscore++;pin.classList.add("good")}else{pin.classList.add("badp");document.getElementById("g-"+right).classList.add("good")}
+      GS.mq++;
+      setTimeout(function(){
+        document.querySelectorAll("#t5 .pin").forEach(function(p){p.classList.remove("good","badp")});
+        askMap();
+      },900);
+    }
+  }
+});
+$view.addEventListener("input",function(e){
+  if(e.target.id==="tsearch")document.getElementById("tlist").innerHTML=termList(e.target.value);
+});
+route();
+</script>
+
+</body></html>
